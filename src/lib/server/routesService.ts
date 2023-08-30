@@ -5,8 +5,14 @@ import { apiFetch } from '../api';
 import { CalTopoMapSince } from '@challenge/types/caltopo';
 import { ListRoutesItem } from '@challenge/types/api/listRoutesApi';
 
+export interface ParsedRoute {
+  route: Feature<LineString>,
+  buffered: Feature<Polygon>,
+  splits: { title: string, point: Position }[]
+}
+
 export class RoutesService {
-  private routes: Record<string, { route: Feature<LineString>, buffered: Feature<Polygon>, splits: { title: string, point: Position }[]}> = {};
+  private routes: Record<string, ParsedRoute> = {};
 
   private async init() {
     if (Object.keys(this.routes).length == 0) {
@@ -51,5 +57,10 @@ export class RoutesService {
       title: r.route.properties?.title ?? 'Unnamed',
       description: r.route.properties?.description?.split('\n')?.[0],
     }));
+  }
+
+  async getAllRoutes(): Promise<ParsedRoute[]> {
+    await this.init();
+    return Object.values(this.routes);
   }
 }

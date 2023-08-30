@@ -5,22 +5,8 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { useAppDispatch, useAppSelector } from '@challenge/lib/client/store';
 import { Typography } from '@mui/material';
 import { RouteUserTrackStats } from '@challenge/types/api/routeUserTrackStats';
-import { format, intervalToDuration } from 'date-fns';
-
-function formatDuration(ms: number) {
-  const duration = intervalToDuration({ start: 0, end: ms })
-
-  const zeroPad = (num: number|undefined) => String(num).padStart(2, '0');
-
-  return [
-    duration.hours,
-    duration.minutes,
-    duration.seconds,
-  ]
-  .filter(Boolean)
-  .map(zeroPad)
-  .join(':');
-}
+import { format } from 'date-fns';
+import { formatDuration } from '@challenge/lib/formatting';
 
 const columns: GridColDef[] = [
   { field: 'userName', headerName: 'Name', minWidth: 150 },
@@ -46,17 +32,19 @@ export default function RoutePage({ params }: { params: { id: string } }) {
 
   useEffect(() => {
     fetch(`/api/v1/routes/${params.id}/tracks`).then(response => response.json()).then(setTracks);
-  }, []);
+  }, [params.id]);
 
   return (
-    <Box sx={{ width: '100%', mb: 2 }}>
-      <Typography variant="h5">Reported Times</Typography>
+    <Box sx={{ width: '100%', bgcolor: 'background.paper', padding: 2 }}>
+      <Typography variant="h5" sx={{ mb: 1 }}>Reported Times</Typography>
+      { tracks ? (
       <DataGrid
         sx={{height: 400}}
         rows={tracks?.list ?? []}
         columns={columns}
         disableRowSelectionOnClick
       />
+      ) : <div>Loading ...</div>}
     </Box>
   );
 }

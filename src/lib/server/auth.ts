@@ -2,7 +2,7 @@ import UserAuth from '@challenge/types/userAuth';
 import { UserInfo } from '@challenge/types/userInfo';
 import { unsealData } from "iron-session";
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
-import { ReadonlyRequestCookies } from "next/dist/server/app-render";
+import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import { cookies } from 'next/headers';
 
 export async function getCookieAuth() {
@@ -24,7 +24,7 @@ export async function getAuthFromApiCookies(
  * @returns UserAuth or undefined
  */
 export async function getAuthFromCookies(
-  cookies: ReadonlyRequestCookies|RequestCookies
+  cookies: RequestCookies | ReadonlyRequestCookies
 ): Promise<UserAuth | undefined> {
   const cookieName = process.env.SESSION_COOKIE_NAME as string;
   return getAuthFromCookie(cookies.get(cookieName)?.value);

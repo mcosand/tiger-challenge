@@ -12,7 +12,7 @@ export const GET: RouteHandlerWithSession = ironSessionWrapper(async (request) =
   const email = auth.email;
 
   const mongo = await mongoPromise;
-  const list = await mongo.db().collection<UserTrackDoc>('tracks').find({ email }).toArray();
+  const list = await mongo.db().collection<UserTrackDoc>('userTracks').find({ email }).toArray();
 
   return NextResponse.json({
     status: 'ok',

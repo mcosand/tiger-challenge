@@ -9,8 +9,10 @@ export interface TrackSegmentStats {
 export interface UserTrackDoc {
   email: string;
   userName: string;
+
   mapId: string;
   caltopoId: string;
+  title: string;
   updated: number;
   routeId: string;
 

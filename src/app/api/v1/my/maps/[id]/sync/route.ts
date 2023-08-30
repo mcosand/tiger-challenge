@@ -8,6 +8,7 @@ import { CalTopoMapSince } from '@challenge/types/caltopo';
 import { RouteMapDoc } from '@challenge/types/data/routeMapDoc';
 import { TrackSegmentStats, UserTrackDoc } from '@challenge/types/data/UserTrackDoc';
 import mongodb from '@challenge/lib/server/mongodb';
+import { getServices } from '@challenge/lib/server/services';
 
 interface GetParams { id: string };
 
@@ -34,39 +35,10 @@ export const GET: RouteHandlerWithSessionParams<GetParams> = ironSessionWrapperP
   const mongo = await mongoPromise;
 
 
-  const routes: { route: Feature<LineString>, buffered: Feature<Polygon>, splits: { title: string, point: Position }[]}[] = [];
-  const routeMapDocs = await (await mongo.db().collection<RouteMapDoc>('routeMaps').find().toArray())
-                        .filter(d => d.isPublished ?? true);
-  for (const doc of routeMapDocs) {
-    const routeMap = await (await apiFetch<CalTopoMapSince>(`https://caltopo.com/api/v1/map/${doc.mapId}/since/0`)).result.state;
-    for (const r of routeMap.features.filter(f => f.properties?.class === 'Shape')) {
-      const route = r as Feature<LineString>;
-      const buffered = buffer(r, 100, { units: 'feet' }) as Feature<Polygon>;
-
-      console.log('looking for split points ' + `${r.properties?.title}-split`);
-      const splitPoints = routeMap.features.filter(f => f.properties?.class === 'Marker' && f.properties?.title?.startsWith(`${r.properties?.title}-split`));
-      splitPoints.sort((a,b) => (a.properties?.title ?? '') - (b.properties?.title ?? ''));
-
-      const splits = [
-        { title: 'Start', point: route.geometry.coordinates[0] },
-        ...splitPoints.map(f => ({ title: (f.properties?.description ?? 'N/A').split('\n')[0], point: (f.geometry as Point).coordinates })),
-        { title: 'Top', point: route.geometry.coordinates[route.geometry.coordinates.length - 1] },
-        { title: 'Return', point: route.geometry.coordinates[0] },
-      ];
-      console.log('found split points ', splits);
-      routes.push({
-        route,
-        buffered,
-        splits,
-      });
-      //console.log(routes[0]);
-    }
-  }
-
+  const routes = await (await getServices()).routes.getAllRoutes();
 
   const user = await mongo.db().collection<UserDoc>('users').findOne({ email: auth.email });
   const caltopoSince = (await apiFetch<CalTopoMapSince>(`https://caltopo.com/api/v1/map/${params.id}/since/0`));
-  //console.log(caltopoSince);
 
   const parsedTracks: UserTrackDoc[] = [];
 
@@ -87,15 +59,15 @@ export const GET: RouteHandlerWithSessionParams<GetParams> = ironSessionWrapperP
       userName: user?.name ?? '',
       mapId: params.id,
       caltopoId: track.id as string,
+      title: track.properties?.title ?? 'Unnamed',
       updated: track.properties?.updated,
       routeId: route.route.id as string,
       started: coords[0][3],
       splits: [],
     }
 
-//    const splitIndicies: [number, number][] = [];
     let splitIndex = 0;
-    let splitPointBuffer = buffer(point(route.splits[splitIndex].point), 30, { units: 'feet' });
+    let splitPointBuffer = buffer(point(route.splits[splitIndex].point), 50, { units: 'feet' });
     let enterSplitIndex: number|undefined = undefined;
     let courseStartIndex: number|undefined = undefined;
 
@@ -109,7 +81,7 @@ export const GET: RouteHandlerWithSessionParams<GetParams> = ironSessionWrapperP
         } else if (splitIndex >= route.splits.length) {
           break;
         }
-        splitPointBuffer = buffer(point(route.splits[splitIndex].point), 30, { units: 'feet'});
+        splitPointBuffer = buffer(point(route.splits[splitIndex].point), 50, { units: 'feet'});
       } else if (enterSplitIndex !== undefined && !booleanPointInPolygon(coords[i], splitPointBuffer) && booleanPointInPolygon(coords[i+1], splitPointBuffer)) {
         userTrack.splits.push(statsForLine(route.splits[splitIndex].title, coords.slice(enterSplitIndex, i)))
 
