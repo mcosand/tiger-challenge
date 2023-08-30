@@ -1,7 +1,7 @@
 import { OAuth2Client } from 'google-auth-library';
 import { MemberProviderRegistry } from './memberProviders/memberProvider';
 import D4HMembersProvider from './memberProviders/d4hMembersProvider';
-import { MemberProviderType } from '@respond/types/data/MemberProviderType';
+import { MemberProviderType } from '@challenge/types/data/MemberProviderType';
 
 export interface Services {
   authClient: OAuth2Client;

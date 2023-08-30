@@ -1,4 +1,4 @@
-import mongoPromise from '@respond/lib/server/mongodb';
+import mongoPromise from '@challenge/lib/server/mongodb';
 import { MemberAuthInfo, MemberInfo, MemberProvider } from "./memberProvider";
 
 const D4H_MEMBER_REFRESH_SECS = 15 * 60;

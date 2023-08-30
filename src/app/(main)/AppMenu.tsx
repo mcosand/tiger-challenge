@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { Divider, IconButton, Menu, MenuItem } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { useAppDispatch, useAppSelector } from '@respond/lib/client/store';
-import { AuthActions } from '@respond/lib/client/store/auth';
-import { BuildInfo } from '@respond/components/BuildInfo';
+import { useAppDispatch, useAppSelector } from '@challenge/lib/client/store';
+import { AuthActions } from '@challenge/lib/client/store/auth';
+import { BuildInfo } from '@challenge/components/BuildInfo';
 
 export function AppMenu() {
   const dispatch = useAppDispatch();

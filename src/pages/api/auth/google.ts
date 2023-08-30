@@ -1,14 +1,13 @@
-import { sessionOptions } from '@respond/lib/session';
+import { sessionOptions } from '@challenge/lib/session';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getServices } from '@respond/lib/server/services';
-import * as Auth from '@respond/lib/server/auth';
-import { MemberProvider } from '@respond/lib/server/memberProviders/memberProvider';
+import { getServices } from '@challenge/lib/server/services';
+import * as Auth from '@challenge/lib/server/auth';
+import { MemberProvider } from '@challenge/lib/server/memberProviders/memberProvider';
 import { TokenPayload } from 'google-auth-library';
-import { AuthResponse } from '@respond/types/authResponse'
-import { AuthError } from '@respond/lib/apiErrors'
-import D4HMembersProvider from '@respond/lib/server/memberProviders/d4hMembersProvider';
-import { MemberProviderType } from '@respond/types/data/MemberProviderType';
+import { AuthResponse } from '@challenge/types/authResponse'
+import { AuthError } from '@challenge/lib/apiErrors'
+import { MemberProviderType } from '@challenge/types/data/MemberProviderType';
 
 async function apiLogin(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {

@@ -1,15 +1,15 @@
 'use client';
 
-import { Box, Button, Stack } from '@respond/components/Material';
+import { Box, Button, Stack } from '@challenge/components/Material';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import Api from '@respond/lib/api';
-import { useAppDispatch, useAppSelector } from '@respond/lib/client/store';
-import { AuthActions } from '@respond/lib/client/store/auth';
-import { AuthResponse } from '@respond/types/authResponse'
+import Api from '@challenge/lib/api';
+import { useAppDispatch, useAppSelector } from '@challenge/lib/client/store';
+import { AuthActions } from '@challenge/lib/client/store/auth';
+import { AuthResponse } from '@challenge/types/authResponse'
 import { useState } from 'react'
-import { AuthError } from '@respond/lib/apiErrors'
+import { AuthError } from '@challenge/lib/apiErrors'
 import { Alert, AlertTitle } from '@mui/material'
-import { MemberProviderName } from '@respond/types/data/MemberProviderType'
+import { MemberProviderName } from '@challenge/types/data/MemberProviderType'
 
 export default function LoginPanel() {
   const { noExternalNetwork } = useAppSelector(state => state.config.dev );

@@ -1,14 +1,14 @@
 'use client';
 
-import { createTheme, ThemeOptions, ThemeProvider, useMediaQuery } from '@respond/components/Material';
+import { createTheme, ThemeOptions, ThemeProvider, useMediaQuery } from '@challenge/components/Material';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { ReactNode, useMemo, useState } from 'react';
 
 import { Provider } from 'react-redux';
-import { ConfigActions } from '@respond/lib/client/store/config';
-import { UserInfo } from '@respond/types/userInfo';
-import { AuthActions } from '@respond/lib/client/store/auth';
-import { AppStore, buildClientStore } from '@respond/lib/client/store';
+import { ConfigActions } from '@challenge/lib/client/store/config';
+import { UserInfo } from '@challenge/types/userInfo';
+import { AuthActions } from '@challenge/lib/client/store/auth';
+import { AppStore, buildClientStore } from '@challenge/lib/client/store';
 
 export interface SiteConfig {
   theme: { primary: string; primaryDark?: string };

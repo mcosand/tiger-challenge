@@ -1,5 +1,5 @@
 import type { IronSessionOptions } from 'iron-session'
-import UserAuth from '@respond/types/userAuth';
+import UserAuth from '@challenge/types/userAuth';
 
 export const sessionOptions: IronSessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,

@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Container } from '@mui/material';
 import { AppMenu } from './AppMenu';
-import { useAppSelector } from '@respond/lib/client/store';
+import { useAppSelector } from '@challenge/lib/client/store';
 import LoginPanel from '../LoginPanel';
 
 export default function MainLayout({

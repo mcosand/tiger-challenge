@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from './Material';
-import { useAppSelector } from '@respond/lib/client/store';
+import { useAppSelector } from '@challenge/lib/client/store';
 
 export const BuildInfo = ({ open, onClose }: { open: boolean, onClose: () => void }) => {
   const buildId = useAppSelector(s => s.config.dev.buildId);
@@ -18,7 +18,7 @@ export const BuildInfo = ({ open, onClose }: { open: boolean, onClose: () => voi
           { commit === 'development' ? (
             'Development Build'
           ) : (
-            <>Build: <a target="_blank" href={`https://github.com/KingCountySAR/respond-next/commits/${commit}`}>{buildId}</a></>
+            <>Build: <a target="_blank" href={`https://github.com/mcosand/tiger-challenge/commits/${commit}`}>{buildId}</a></>
           )}
         </DialogContentText>
       </DialogContent>

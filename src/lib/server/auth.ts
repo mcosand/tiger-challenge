@@ -1,5 +1,5 @@
-import UserAuth from '@respond/types/userAuth';
-import { UserInfo } from '@respond/types/userInfo';
+import UserAuth from '@challenge/types/userAuth';
+import { UserInfo } from '@challenge/types/userInfo';
 import { unsealData } from "iron-session";
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { ReadonlyRequestCookies } from "next/dist/server/app-render";
