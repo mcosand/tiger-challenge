@@ -2,9 +2,11 @@ import { OAuth2Client } from 'google-auth-library';
 import { MemberProviderRegistry } from './memberProviders/memberProvider';
 import D4HMembersProvider from './memberProviders/d4hMembersProvider';
 import { MemberProviderType } from '@challenge/types/data/MemberProviderType';
+import { RoutesService } from './routesService';
 
 export interface Services {
   authClient: OAuth2Client;
+  routes: RoutesService;
   memberProviders: MemberProviderRegistry;
 }
 
@@ -15,6 +17,7 @@ export async function getServices(): Promise<Services> {
 
     instance = {
       authClient: new OAuth2Client(process.env.GOOGLE_ID),
+      routes: new RoutesService(),
       memberProviders: new MemberProviderRegistry(),
     };
 

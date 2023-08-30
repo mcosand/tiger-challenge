@@ -1,21 +1,35 @@
 'use client';
-import { Box } from "@mui/material";
-import { useEffect } from 'react';
-import addDays from 'date-fns/addDays'
+import Link from 'next/link';
+import { Box, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { useEffect, useState } from 'react';
+import { apiFetch } from '@challenge/lib/api';
+import { ListRoutesApiResult, ListRoutesItem } from '@challenge/types/api/listRoutesApi';
 
 
 export default function Home() {
 
-  const maxCompletedActivitiesVisible = 3;
-  const oldestCompletedActivityVisible = addDays(new Date(), -3).getTime();
+  const [ list, setList ] = useState<ListRoutesItem[]>([]);
 
   useEffect(() => {
     document.title = "Home";
+    apiFetch<ListRoutesApiResult>('/api/v1/routes').then(r => r.list).then(setList);
   }, []);
 
   return (
     <main>
-      <Box>Main Content</Box>
+    <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <nav aria-label="list of routes">
+        <List disablePadding>
+          {list.map(r => (
+            <ListItem key={r.id}>
+              <ListItemButton LinkComponent={Link} href={`/route/${r.id}`}>
+                <ListItemText primary={r.title} secondary={r.description} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+          </List>
+        </nav>
+      </Box>
     </main>
   );
 }

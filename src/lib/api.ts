@@ -1,6 +1,7 @@
 export async function apiFetch<T>(url: string, config?: RequestInit) :Promise<T> {
   const response = await fetch(url, {
     method: 'GET',
+    cache: 'no-cache',
     ...config,
     headers: {
       'Content-Type': 'application/json',
