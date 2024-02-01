@@ -1,7 +1,7 @@
-import { getIronSession, IronSession, IronSessionOptions } from 'iron-session'
+import { getIronSession, IronSession } from 'iron-session'
 import UserAuth from '@challenge/types/userAuth';
 
-export const sessionOptions: IronSessionOptions = {
+export const sessionOptions = {
   password: process.env.SECRET_COOKIE_PASSWORD as string,
   cookieName: process.env.SESSION_COOKIE_NAME as string,
   // secure: true should be used in production (HTTPS) but can't be used in development (HTTP)
@@ -11,11 +11,9 @@ export const sessionOptions: IronSessionOptions = {
 }
 
 // This is where we specify the typings of req.session.*
-declare module 'iron-session' {
   interface IronSessionData {
     auth?: UserAuth;
   }
-}
 
 type DynamicSegments<T> = {
   params: T;
@@ -29,7 +27,7 @@ type RouteHandler<T> = (
 export type RouteHandlerWithSession = RouteHandlerWithSessionParams<never>;
 
 export type RouteHandlerWithSessionParams<T> = (
-  request: Request & { session: IronSession },
+  request: Request & { session: IronSession<IronSessionData> },
   routeSegment: DynamicSegments<T>
 ) => Promise<Response>;
 
