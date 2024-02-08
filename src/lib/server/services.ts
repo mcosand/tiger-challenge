@@ -3,10 +3,12 @@ import { MemberProviderRegistry } from './memberProviders/memberProvider';
 import D4HMembersProvider from './memberProviders/d4hMembersProvider';
 import { MemberProviderType } from '@challenge/types/data/MemberProviderType';
 import { RoutesService } from './routesService';
+import { CalTopoClient } from './caltopoClient';
 
 export interface Services {
   authClient: OAuth2Client;
   routes: RoutesService;
+  caltopo: CalTopoClient;
   memberProviders: MemberProviderRegistry;
 }
 
@@ -17,6 +19,7 @@ export async function getServices(): Promise<Services> {
 
     instance = {
       authClient: new OAuth2Client(process.env.GOOGLE_ID),
+      caltopo: new CalTopoClient(process.env.CALTOPO_APIKEY ?? '', process.env.CALTOPO_AUTHID ?? '', process.env.CALTOPO_AUTHKEY ?? ''),
       routes: new RoutesService(),
       memberProviders: new MemberProviderRegistry(),
     };

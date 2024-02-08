@@ -2,7 +2,7 @@ import { buffer, Feature, LineString, Point, Polygon, Position } from '@turf/tur
 import mongoPromise from '@challenge/lib/server/mongodb';
 import { RouteMapDoc } from '@challenge/types/data/routeMapDoc';
 import { apiFetch } from '../api';
-import { CalTopoMapSince } from '@challenge/types/caltopo';
+import { CalTopoApiResponse, CalTopoMap } from '@challenge/types/caltopo';
 import { ListRoutesItem } from '@challenge/types/api/listRoutesApi';
 
 export interface ParsedRoute {
@@ -25,7 +25,7 @@ export class RoutesService {
     const routeMapDocs = await (await mongo.db().collection<RouteMapDoc>('routeMaps').find().toArray())
                           .filter(d => d.isPublished ?? true);
     for (const doc of routeMapDocs) {
-      const routeMap = await (await apiFetch<CalTopoMapSince>(`https://caltopo.com/api/v1/map/${doc.mapId}/since/0`)).result.state;
+      const routeMap = await (await apiFetch<CalTopoApiResponse<CalTopoMap>>(`https://caltopo.com/api/v1/map/${doc.mapId}/since/0`)).result.state;
       for (const r of routeMap.features.filter(f => f.properties?.class === 'Shape')) {
         const route = r as Feature<LineString>;
         const buffered = buffer(r, 100, { units: 'feet' }) as Feature<Polygon>;

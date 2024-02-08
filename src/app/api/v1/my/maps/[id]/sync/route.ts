@@ -4,7 +4,7 @@ import mongoPromise from '@challenge/lib/server/mongodb';
 import { UserDoc } from '@challenge/types/data/userDoc';
 import { apiFetch } from '@challenge/lib/api';
 import { booleanContains, booleanOverlap, booleanPointInPolygon, buffer, Feature, FeatureCollection, Geometry, length, LineString, lineString, Point, point, Polygon, Position } from '@turf/turf';
-import { CalTopoMapSince } from '@challenge/types/caltopo';
+import { CalTopoApiResponse, CalTopoMap } from '@challenge/types/caltopo';
 import { RouteMapDoc } from '@challenge/types/data/routeMapDoc';
 import { TrackSegmentStats, UserTrackDoc } from '@challenge/types/data/UserTrackDoc';
 import mongodb from '@challenge/lib/server/mongodb';
@@ -38,7 +38,7 @@ export const GET: RouteHandlerWithSessionParams<GetParams> = ironSessionWrapperP
   const routes = await (await getServices()).routes.getAllRoutes();
 
   const user = await mongo.db().collection<UserDoc>('users').findOne({ email: auth.email });
-  const caltopoSince = (await apiFetch<CalTopoMapSince>(`https://caltopo.com/api/v1/map/${params.id}/since/0`));
+  const caltopoSince = (await apiFetch<CalTopoApiResponse<CalTopoMap>>(`https://caltopo.com/api/v1/map/${params.id}/since/0`));
 
   const parsedTracks: UserTrackDoc[] = [];
 

@@ -11,9 +11,11 @@ export const sessionOptions = {
 }
 
 // This is where we specify the typings of req.session.*
-  interface IronSessionData {
-    auth?: UserAuth;
-  }
+interface IronSessionData {
+  auth?: UserAuth;
+  verificationToken?: string;
+  caltopoApiKey?: string;
+}
 
 type DynamicSegments<T> = {
   params: T;

@@ -10,4 +10,5 @@ export interface UserDoc {
   anonymous: boolean;
   lastLogin: number;
   maps: UserMapDoc[];
+  caltopoApiKey?: string;
 }
