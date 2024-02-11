@@ -4,6 +4,7 @@ import { unsealData } from "iron-session";
 import { RequestCookies } from 'next/dist/compiled/@edge-runtime/cookies';
 import { ReadonlyRequestCookies } from 'next/dist/server/web/spec-extension/adapters/request-cookies';
 import { cookies } from 'next/headers';
+import { IronSessionData } from '../session';
 
 export async function getCookieAuth() {
   return getAuthFromCookies(cookies());
@@ -13,7 +14,6 @@ export async function getAuthFromApiCookies(
   cookies: Partial<{[key: string]: string}>
 ): Promise<UserAuth|undefined> {
   const cookieName = process.env.SESSION_COOKIE_NAME as string;
-  const found = cookies[cookieName];
   return getAuthFromCookie(cookies[cookieName]);
 }
 
@@ -35,10 +35,10 @@ async function getAuthFromCookie(
 ) {
   if (!sessionCookie) return undefined;
 
-  const { auth } = await unsealData(sessionCookie, {
+  const { auth } = await unsealData<IronSessionData>(sessionCookie, {
     password: process.env.SECRET_COOKIE_PASSWORD as string,
   });
-  return auth as unknown as UserAuth;
+  return auth;
 }
 
 
