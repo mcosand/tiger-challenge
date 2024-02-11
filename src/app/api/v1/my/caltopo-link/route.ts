@@ -2,10 +2,9 @@ import { ironSessionWrapper, RouteHandlerWithSession } from '@challenge/lib/sess
 import { NextResponse } from 'next/server';
 import mongoPromise from '@challenge/lib/server/mongodb';
 import { UserDoc } from '@challenge/types/data/userDoc';
-import { ProfileApiResult } from '@challenge/types/api/profileApi';
-import { CalTopoClient, generateCalTopoVerificationToken } from '@challenge/lib/server/caltopoClient';
+import { generateCalTopoVerificationToken } from '@challenge/lib/server/caltopoClient';
 import { getServices } from '@challenge/lib/server/services';
-import { CalTopoApiError, isCalTopoError, MAP_URL_CODE_GROUP, MAP_URL_ID_GROUP, MAP_URL_REGEX } from '@challenge/types/caltopo';
+import { isCalTopoError, MAP_URL_CODE_GROUP, MAP_URL_ID_GROUP, MAP_URL_REGEX } from '@challenge/types/caltopo';
 
 function e(status: number, msg: string) {
   return NextResponse.json({
